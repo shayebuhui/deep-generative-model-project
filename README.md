@@ -23,6 +23,6 @@ To run the code for the MNIST experiment:
 
 `python mnist/train.py --epochs 50 --en_dim 5 --save_dir results --loss nsgan`
 
-The visualization of the results can be done with `plot.py`, including plotting eigenvalue of jacobian matrix, eigenvalue of hessian matrix of generator or discriminator loss function and distribution or visualization of generator samples. 
+The visualization of the results can be done with `plot.py`, including plotting eigenvalue of jacobian matrix, eigenvalue of hessian matrix of generator or discriminator loss function, and distribution or visualization of generator samples. 
 
 `python mnist/plot.py --task eig --loss nsgan`
