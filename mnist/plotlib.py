@@ -66,10 +66,11 @@ def _plot_eigenvalues(dict_eigs1, dict_eigs2, labels, save_path, fig_name):
     os.makedirs(save_path, exist_ok=True)
     
     fig1 = plt.figure()
-    # for i, eigs in enumerate([dict_eigs1['game_eigs'], dict_eigs2['game_eigs']]):
-    end = plt.scatter(dict_eigs2['game_eigs'].real, dict_eigs2['game_eigs'].imag, c=[tableau20[2]], label=labels[1], alpha=0.6, edgecolors="black", s=40)
-    init = plt.scatter(dict_eigs1['game_eigs'].real, dict_eigs1['game_eigs'].imag, c=[tableau20[0]], label=labels[0], alpha=0.6, edgecolors="black", s=40)
-        # plt.scatter(eigs.real, eigs.imag, label=labels[i], alpha=0.8)
+    end = plt.scatter(dict_eigs2['game_eigs'].real, dict_eigs2['game_eigs'].imag, 
+                c=[tableau20[2]], label=labels[1], alpha=0.6, edgecolors="black", s=40)
+    init = plt.scatter(dict_eigs1['game_eigs'].real, dict_eigs1['game_eigs'].imag, 
+                 c=[tableau20[0]], label=labels[0], alpha=0.6, edgecolors="black", s=40)
+
     plt.grid(True, color="#93a1a1", alpha=0.3)
 
     plt.xlabel('Real Part', fontsize=16)

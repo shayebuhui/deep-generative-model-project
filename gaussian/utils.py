@@ -4,6 +4,7 @@ from model import get_generator, get_discriminator
 import numpy as np
 import scipy
 
+## Gradient penalty term for WGAN-GP
 def gradient_penalty(x, z, model):
     assert x.shape == z.shape
     alpha = tf.random.uniform(shape=[x.shape[0]] + [1] * (len(x.shape) - 1), minval=0., maxval=1.)
@@ -19,6 +20,7 @@ def gradient_penalty(x, z, model):
     del grad_tape
     return gradient_penalty
 
+## Get matrix form of jacodian matrix
 def hessian_matrix(grad_grads, grads):
     hessian = []
     for hs, g in zip(grad_grads, grads):
@@ -37,15 +39,14 @@ def hessian_matrix(grad_grads, grads):
         hessian.append(hess_rows)
     return tf.concat(hessian, axis=0).numpy()
 
+## Get jacobian matrix and game gradient vector
 def get_grad_hessian(D, G, trainset, loss_type, use_hessian=True):
     with tf.GradientTape(persistent=True) as hess_tape:
         with tf.GradientTape(persistent=True) as grad_tape:
             z = np.random.normal(loc=0.0, scale=1.0, size=[10000, 1]).astype(np.float32)
             d_logits = D(G(z))
             d2_logits = D(trainset)
-                            
-            # discriminator: real images are labelled as 1
-            # discriminator: images from generator (fake) are labelled as 0
+
             if loss_type == 'lsgan':
                 d_loss_real = tl.cost.mean_squared_error(tf.sigmoid(d2_logits), tf.ones_like(d2_logits), is_mean=True)
                 d_loss_fake = tl.cost.mean_squared_error(tf.sigmoid(d_logits), tf.zeros_like(d_logits), is_mean=True)
@@ -98,6 +99,7 @@ def interpolate(model, model1, model2, ratio):
     for weight, weight1, weight2 in zip(model.all_weights, model1.all_weights, model2.all_weights):
         weight.assign((1 - ratio) * weight1 + ratio * weight2)
 
+## Get path norm and angle results        
 def path_angle(D, G, D1, D2, G1, G2, trainset, loss_type):
     diff_D = tf.concat([tf.reshape(weights1-weights2, [-1, ]) for weights1, weights2 in zip(D1.all_weights, D2.all_weights)], axis=0).numpy()
     diff_G = tf.concat([tf.reshape(weights1-weights2, [-1, ]) for weights1, weights2 in zip(G1.all_weights, G2.all_weights)], axis=0).numpy()
@@ -112,9 +114,6 @@ def path_angle(D, G, D1, D2, G1, G2, trainset, loss_type):
         interpolate(G, G1, G2, ratio)
         grads_D, grads_G = get_grad_hessian(D, G, trainset, loss_type, use_hessian=False)
         grads = np.concatenate([grads_D, grads_G], axis=0)
-#         if ratio > 1:
-#             from IPython import embed
-#             embed()
         if np.linalg.norm(grads) == 0:
             angle_list.append(1)
         else:    

@@ -48,7 +48,7 @@ def generate_interpolate(path, epoch1, epoch2, en_dim=5):
 
     tl.visualize.save_images(np.concatenate(res, axis=0), [9, 30], 'figure_%s/inter_%d_%d.png' % (path, epoch1, epoch2))
 
-    
+## Plot Path-norm and Path-angle     
 def plot_avg_cosine_similarity(path, epoch1, epoch2, loss_type, en_dim=5):
     trainset, len_instance = get_mnist(10000)
     D1 = get_discriminator([None, 28, 28, 1], df_dim=8)
@@ -81,6 +81,7 @@ def plot_avg_cosine_similarity(path, epoch1, epoch2, loss_type, en_dim=5):
     np.save('./figure_%s/norm_g_%s_%s.npy' % (path, epoch1, epoch2), np.array(norm_g))
     _plot_avg_cosine_similarity(np.linspace(-1, 2, 31), angle_list, norm_g, 'figure_' + path, 'angle_norm_%s_%s' % (epoch1, epoch2))
 
+## Plot eigenvalue of jacobian matrix and hessian matrix in each loss 
 def plot_eigenvalues(path, epoch, loss_type, en_dim=5):
     trainset, len_instance = get_mnist(10000)
     D = get_discriminator([None, 28, 28, 1], df_dim=8)
@@ -117,6 +118,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Gaussian GAN Plot.')
     parser.add_argument('--epoch', default=40, type=int, help='Epoch for figure.')
     parser.add_argument('--loss', default='wgan-gp', type=str, help='GAN loss.')
+    parser.add_argument('--task', default='dis', type=str, help='Plot task.', choices=['gen', 'eig', 'path'])
     parser.add_argument('--epoch1', default=40, type=str, help='Epoch for figure.')
     parser.add_argument('--epoch2', default=49, type=str, help='Epoch for figure.')
     
@@ -126,15 +128,15 @@ if __name__ == '__main__':
     args = parser.parse_args()
     path = 'results_' + args.loss + '/results'
     loss_type = args.loss
-    plot_avg_cosine_similarity(path, 'init', args.epoch1, loss_type, en_dim=5)
-    plot_avg_cosine_similarity(path, 'init', 45, loss_type, en_dim=5)
-    plot_avg_cosine_similarity(path, 'init', args.epoch2, loss_type, en_dim=5)
-    plot_avg_cosine_similarity(path, args.epoch1, args.epoch2, loss_type, en_dim=5)
-#     plot_eigenvalues(path, 99, loss_type, en_dim=5)
-#     plot_avg_cosine_similarity(path, 95, loss_type, en_dim=5)
-#     plot_eigenvalues(path, 95, loss_type, en_dim=5)
-#     plot_avg_cosine_similarity(path, 90, loss_type, en_dim=5)
-#     plot_eigenvalues(path, 90, loss_type, en_dim=5)
-#     generate_interpolate(path, args.epoch1, args.epoch2)
+
+    if args.task == 'eig': 
+        plot_eigenvalues(path, args.epoch, loss_type, en_dim=5)
+    if args.task == 'path':    
+        plot_avg_cosine_similarity(path, 'init', args.epoch1, loss_type, en_dim=5)
+        plot_avg_cosine_similarity(path, 'init', args.epoch2, loss_type, en_dim=5)
+        plot_avg_cosine_similarity(path, args.epoch1, args.epoch2, loss_type, en_dim=5)
+    if args.task == 'gen':
+        generate_interpolate(path, args.epoch1, args.epoch2, en_dim=5)
+
     time_end = time.time()
     print('time cost',time_end-time_start,'s')

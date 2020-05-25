@@ -4,6 +4,7 @@ from model import get_generator, get_discriminator
 import numpy as np
 import scipy
 
+## Gradient penalty term for WGAN-GP
 def gradient_penalty(x, z, model):
     assert x.shape == z.shape
     alpha = tf.random.uniform(shape=[x.shape[0]] + [1] * (len(x.shape) - 1), minval=0., maxval=1.)
@@ -23,6 +24,7 @@ def grad_vec(grads, weights):
     assert len(grads) == len(weights)
     return tf.concat([tf.reshape(grads[idx], [-1, np.prod(weights[idx].shape)]) for idx in range(len(weights))], axis=1).numpy()
 
+## Get matrix form of jacodian matrix
 def get_grad_hessian(D, G, trainset, loss_type, use_hessian=True):
     count = 0
     flag = 0
@@ -112,6 +114,7 @@ def interpolate(model, model1, model2, ratio):
     for weight, weight1, weight2 in zip(model.all_weights, model1.all_weights, model2.all_weights):
         weight.assign((1 - ratio) * weight1 + ratio * weight2)
 
+## Get path norm and angle results         
 def path_angle(D, G, D1, D2, G1, G2, trainset, loss_type):
     diff_D = tf.concat([tf.reshape(weights1-weights2, [-1, ]) 
                  for weights1, weights2 in zip(D1.trainable_weights, D2.trainable_weights)], axis=0).numpy()

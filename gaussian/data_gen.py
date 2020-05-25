@@ -1,3 +1,4 @@
+## Generate MoG dataset
 import numpy as np
 n = 10000
 x = np.random.randn(n, 1) * np.sqrt(0.5)+2

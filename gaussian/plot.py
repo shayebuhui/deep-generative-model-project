@@ -19,7 +19,7 @@ gpus = tf.config.experimental.list_physical_devices(device_type='GPU')
 for gpu in gpus:
     tf.config.experimental.set_memory_growth(gpu, True)
     
-## Distribution
+## Generator Distribution
 def hist_com(path, epoch):
     G = get_discriminator([None, 1], h=50)
     G.load_weights(path + '/G_' + str(epoch) + '.npz')
@@ -31,6 +31,7 @@ def hist_com(path, epoch):
     os.makedirs('figure_%s' % path, exist_ok=True)
     plt.savefig('figure_%s/dis_%d.jpg' % (path, epoch), format='jpg', bbox_inches="tight")
 
+## Generator distribution between two training epochs
 def hist_com_inter(path, epoch1, epoch2):
     G1 = get_discriminator([None, 1], h=50)
     G1.load_weights(path + '/G_' + str(epoch1) + '.npz')
@@ -52,6 +53,7 @@ def hist_com_inter(path, epoch1, epoch2):
     plt.tight_layout()
     plt.savefig('figure_%s/dis_%d_%d.jpg' % (path, epoch1, epoch2), format='jpg', bbox_inches="tight")
 
+## Plot Path-norm and Path-angle    
 def plot_avg_cosine_similarity(path, epoch1, epoch2, loss_type):
     trainset = np.load('./data.npy')
     D1 = get_discriminator([None, 1], h=50)
@@ -88,7 +90,7 @@ def plot_avg_cosine_similarity(path, epoch1, epoch2, loss_type):
     np.save('./figure_%s/norm_g_%s_%s.npy' % (path, epoch1, epoch2), np.array(norm_g))
     _plot_avg_cosine_similarity(np.linspace(-1, 2, 31), angle_list, norm_g, 'figure_' + path, 'angle_norm_%s_%s' % (epoch1, epoch2))
 
-    
+## Plot eigenvalue of jacobian matrix and hessian matrix in each loss   
 def plot_eigenvalues(path, epoch, loss_type):
     trainset = np.load('./data.npy')
     D = get_discriminator([None, 1], h=50)
@@ -126,6 +128,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Gaussian GAN Plot.')
     parser.add_argument('--epoch', default=20000, type=int, help='Epoch for figure.')
     parser.add_argument('--loss', default='wgan-gp', type=str, help='GAN loss.')
+    parser.add_argument('--task', default='dis', type=str, help='Plot task.', choices=['dis', 'eig', 'path'])
     parser.add_argument('--epoch1', default=20000, type=str, help='Epoch for figure.')
     parser.add_argument('--epoch2', default=30000, type=str, help='Epoch for figure.')
     
@@ -133,9 +136,13 @@ if __name__ == '__main__':
     path = 'results_' + args.loss
     loss_type = args.loss
     epoch = args.epoch
-#     hist_com(path, args.epoch1)
-#     hist_com_inter(path, args.epoch1, args.epoch2)
-#     plot_avg_cosine_similarity(path, 'init', args.epoch1, loss_type)
-#     plot_avg_cosine_similarity(path, 'init', args.epoch2, loss_type)
-#     plot_avg_cosine_similarity(path, args.epoch1, args.epoch2, loss_type)
-#     plot_eigenvalues(path, epoch, loss_type)
+    
+    if args.task == 'dis':
+        hist_com(path, args.epoch1)
+        hist_com_inter(path, args.epoch1, args.epoch2)
+    if args.task == 'eig':   
+        plot_eigenvalues(path, epoch, loss_type)
+    if args.task == 'path':     
+        plot_avg_cosine_similarity(path, 'init', args.epoch1, loss_type)
+        plot_avg_cosine_similarity(path, 'init', args.epoch2, loss_type)
+        plot_avg_cosine_similarity(path, args.epoch1, args.epoch2, loss_type)   

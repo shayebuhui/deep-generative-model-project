@@ -81,11 +81,15 @@ def train():
                     d_loss_real = -tf.reduce_mean(d2_logits)
                     d_loss_fake = tf.reduce_mean(d_logits) 
 
-                # combined loss for updating discriminator
+                # Combined loss for updating discriminator
                 d_loss = d_loss_real + d_loss_fake
+                
+                ## WGAN-GP
                 if args.loss == 'wgan-gp':
                     penalty = args.gp_lambda * gradient_penalty(batch_images, G(z), D)
                     d_loss += penalty
+                
+                ## Set generator loss
                 if args.loss == 'lsgan':
                     g_loss = tl.cost.mean_squared_error(tf.sigmoid(d_logits), tf.ones_like(d_logits), is_mean=True)
                 if args.loss == 'nsgan':
@@ -101,6 +105,7 @@ def train():
             
             del tape
             
+            ## Clip weights in WGAN
             if args.loss == 'wgan':
                 for weights in D.trainable_weights:
                     weights.assign(tf.clip_by_value(weights, -args.clip, args.clip))
