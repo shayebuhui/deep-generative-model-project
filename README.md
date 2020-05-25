@@ -11,9 +11,15 @@ For any questions regarding the code please contact Hugo Berard (berard.hugo@gma
 The code for computing the eigenvalues and the path-angle is in `plot.py`.
 
 To run the code for the Mixture of Gaussian experiment:
-`python gaussian/train.py --save_dir `
 
-To run the code for the MNIST experiment:
-`python mnist/train.py`
+  Get Mixture of Gaussian dataset:
+  `python data_gen.py`
+  
+  Train for the Mixture of Gaussian experiment:
+  `python gaussian/train.py --epochs 100000 --en_dim 1 --save_dir results`
 
-The visualization of the results can be done with `plot.py`
+To run the code for the MNIST experiment (NSGAN, LSGAN, WGAN, WGAN-GP are available):
+`python mnist/train.py --epochs 50 --en_dim 5 --save_dir results --loss nsgan`
+
+The visualization of the results can be done with `plot.py`, 
+`python mnist/plot.py --task eig results --loss nsgan`
