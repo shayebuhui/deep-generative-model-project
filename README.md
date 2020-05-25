@@ -16,9 +16,11 @@ First, get Mixture of Gaussian dataset:
 `python data_gen.py`
   
 Second, train for the Mixture of Gaussian experiment:
+
 `python gaussian/train.py --epochs 100000 --en_dim 1 --save_dir results`
 
-To run the code for the MNIST experiment (NSGAN, LSGAN, WGAN, WGAN-GP are available):
+To run the code for the MNIST experiment:
+
 `python mnist/train.py --epochs 50 --en_dim 5 --save_dir results --loss nsgan`
 
 The visualization of the results can be done with `plot.py`, including plotting eigenvalue of jacobian matrix, eigenvalue of hessian matrix of generator or discriminator loss function.
