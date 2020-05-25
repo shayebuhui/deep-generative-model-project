@@ -1,9 +1,9 @@
 # Deep-generative-model-project
 Final project of deep-generative-model in Spring 2020
 
-This is the code for reproducing the experimental results in paper [A Closer Look at the Optimization Landscapes of Generative Adversarial Networks](https://arxiv.org/abs/1906.04848), Hugo Berard, Gauthier Gidel,  Amjad Almahairi, Pascal Vincent, Simon Lacoste-Julien, 2019.
+This is the code using tensorflow for reproducing part experimental results in paper [A Closer Look at the Optimization Landscapes of Generative Adversarial Networks](https://arxiv.org/abs/1906.04848), Hugo Berard, Gauthier Gidel,  Amjad Almahairi, Pascal Vincent, Simon Lacoste-Julien, 2019.
 
-For any questions regarding the code please contact Hugo Berard (berard.hugo@gmail.com).
+For any questions regarding the code please contact lindachao@pku.edu.cn.
 
 ## Running the Code
 Two datasets: Mixture of Gaussian and MNIST are available.
