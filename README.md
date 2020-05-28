@@ -17,7 +17,7 @@ First, get Mixture of Gaussian dataset:
   
 Second, train for the Mixture of Gaussian experiment:
 
-`python gaussian/train.py --epochs 100000 --en_dim 1 --save_dir results`
+`python gaussian/train.py --epochs 100000 --en_dim 1 --save_dir results --loss wgan`
 
 To run the code for the MNIST experiment:
 
