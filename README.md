@@ -1,14 +1,14 @@
 ## Deep-generative-model-project
 Final project of deep-generative-model in Spring 2020
 
-This is the code using tensorflow for reproducing part experimental results in paper [A Closer Look at the Optimization Landscapes of Generative Adversarial Networks](https://arxiv.org/abs/1906.04848) and some other similar results. Two datasets: Mixture of Gaussian and MNIST are available. Four objective loss: NSGAN, LSGAN, WGAN, WGAN-GP are available.
+This is the code using tensorflow for reproducing part experimental results in paper [A Closer Look at the Optimization Landscapes of Generative Adversarial Networks](https://arxiv.org/abs/1906.04848) and some other similar results. 
 
 We run this script under [TensorFlow](https://www.tensorflow.org) 2.0 and the [TensorLayer](https://github.com/tensorlayer/tensorlayer) 2.0+. 
 
 For any questions regarding the code please contact lindachao@pku.edu.cn.
 
 ### Prepare Data 
-
+Two datasets: Mixture of Gaussian and MNIST are available.
 - 1. Generate Mixture of Gaussian (MoG) dataset:
 
 ```python
@@ -17,6 +17,7 @@ python data_gen.py
 - 2. Download MNIST dataset.
 
 ### Run
+Four objective loss: NSGAN, LSGAN, WGAN, WGAN-GP are available.
 - To run the code for the Mixture of Gaussian experiment:
 ```python
 python gaussian/train.py --epochs 100000 --en_dim 1 --save_dir results --loss wgan
