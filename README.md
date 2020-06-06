@@ -22,7 +22,7 @@ python data_gen.py
 python gaussian/train.py --epochs 100000 --en_dim 1 --save_dir results --loss wgan
 ```
 
--To run the code for the MNIST experiment:
+- To run the code for the MNIST experiment:
 ```python
 python mnist/train.py --epochs 50 --en_dim 5 --save_dir results --loss nsgan
 ```
@@ -34,12 +34,11 @@ The visualization of the results can be done with `plot.py`, including plotting 
 python mnist/plot.py --task eig --loss nsgan
 ```
 
-
 ### Reference
 * [1] [A Closer Look at the Optimization Landscapes of Generative Adversarial Networks](https://arxiv.org/abs/1906.04848)
 
 ### Author
-- [dachaolin](https://github.com/shayebuhui)
+- [Dachao Lin](https://github.com/shayebuhui)
 
 ### Citation
 If you find this project useful, I would be grateful if you cite the TensorLayer paper：
